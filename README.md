@@ -1,73 +1,6 @@
-Rust Incubator
-==============
+# Rust Incubator
 
-> It wasn’t always so clear, but the Rust programming language is fundamentally about _empowerment_: no matter what kind of code you are writing now, Rust empowers you to reach farther, to program with confidence in a wider variety of domains than you did before.
-_<div align="right">Rust Book's Foreword</div>_
-
-This project represents a hard-way step-by-step [Rust] learning course from language basics to a capability of web backend development.
-
-
-
-
-## Prerequisites
-
-
-### Toolchain
-
-- [rustup] for installing the [Rust] toolchain and keeping it up-to-date.
-- [CLion]/[IntelliJ IDEA] + [IntelliJ Rust] + [Toml][IntelliJ Toml] plugins as the development environment (or any other of your choice).
-
-
-### Bookshelf
-
-- [Rust Book] teaches and explains [Rust] basics.
-- [Rust By Example] teaches you [Rust] basics using editable examples.
-- [Rust Reference] is not a formal spec, but is more detailed and comprehensive than the [Rust Book].
-- [Cheats.rs] and [Rust SVG Cheatsheet] for quick reference.
-- [Rust Edition Guide] for considering the improvements in [Rust 2018] and [Rust 2021].
-- [Rust std lib] documentation.
-- [Cargo Book] is a guide to [Cargo], [Rust]'s build tool and dependency manager.
-- [Rustdoc Book] is a guide to the `rustdoc` documentation tool.
-- [Rust Cookbook] is a collection of simple examples that demonstrate good practices to accomplish common programming tasks, using crates from the [Rust] ecosystem.
-- [Rust Design Patterns] is an open source repository of [Rust] design patterns and idioms.
-- [Effective Rust] is a collection of guidelines that had been learned from real world experience of creating software in [Rust].
-- [Rust API Guidelines] is a set of recommendations on how to design and present APIs for [Rust].
-- [Rust FAQ] answers common questions about [Rust].
-- [Rust Playground] allows sharing and checking runnable [Rust] code snippets online.
-- [Awesome Rust] is a curated list of [Rust] code and resources.
-- [This Week in Rust] represents handpicked and subscribable [Rust] weekly updates.
-- [Baby Steps] blog by [Nicholas Matsakis](https://github.com/nikomatsakis) shares useful [Rust] patterns, ideas and design decisions.
-- [Learning Material for Idiomatic Rust] is a curated list of resources to help you write ergonomic and idiomatic [Rust] code.
-
-
-
-
-## Steps
-
-
-### Before you start
-
-[Create][1] a new [GitHub repository] for yourself using this one [as a template][11].
-
-> __NOTE__: __This learning course is constantly improving and evolving over time.__ 
->
-> To be up-to-date with the recent changes in your own copy of this repository, attach the upstream history with the following commands:
-> ```bash
-> git remote add upstream https://github.com/instrumentisto/rust-incubator.git
-> git fetch upstream main
-> git merge upstream/main --allow-unrelated-histories
-> ```
-> And then, whenever you want to grab some new changes, do the following:
-> ```bash
-> git fetch upstream main
-> git merge upstream/main
-> ```
-> Additionally, to be aware about new changes, you may either [watch this repository on GitHub][2], or even track it via [RSS subscription].
-
-
-### Schedule
-
-Each step must be performed as a separate [PR (pull request)][PR] with an appropriate name and check-marked here in the README's schedule after completion. Each step is a [Cargo workspace member][13], so you can run/test it from the project root (i.e. `cargo run -p step_1_8`). __Consider using [rustfmt] and [Clippy] when you're writing [Rust] code.__
+## ⏱️ Incubator Schedule
 
 - [ ] [0. Become familiar with Rust basics][Step 0] (3 days)
 - [ ] [1. Concepts][Step 1] (2 days, after all sub-steps)
@@ -105,13 +38,52 @@ Each step must be performed as a separate [PR (pull request)][PR] with an approp
     - [ ] [4.3. API servers, clients and tools][Step 4.3] (1 day)
 
 
+## 🎓 My Learning So Far
+
+### ✅ Completed
+#### 📚 Books
+- [Rust Book](https://doc.rust-lang.org/book): Rust basics.
+
+#### 🤺 Exercises
+- [Macro Kata](https://tfpk.github.io/macrokata): a set of exercises which you can use to learn how to write macros.
+- [Rustlings](https://rustlings.cool): a collection of small exercises to get you used to reading and writing Rust code.
+- (did not do the `seq` macro) [Procedural Macros Workshop](https://github.com/dtolnay/proc-macro-workshop): a selection of projects designed to learn to write Rust procedural macros — Rust code that generates Rust code.
+
+#### 📝 Blogs
+- [Pretty State Machine Patterns in Rust](https://hoverbear.org/blog/rust-state-machine-pattern): utilizing Rust's type system to have a compile-time verified state machines.
+- [How to apply hexagonal architecture to Rust](https://web.archive.org/web/20250725142154/https://www.barrage.net/blog/technology/how-to-apply-hexagonal-architecture-to-rust)
+
+#### 📼 Videos
+- [Rust Data Modelling Without Classes](https://www.youtube.com/watch?v=z-0-bbc80JM): nice video by No Boilerplate about state machines.
+- ["Making Impossible States Impossible" by Richard Feldman](https://www.youtube.com/watch?v=IcgmSRJHu_8): ELM conference presentation about modeling types so that erroneous states are impossible to represent.
+- [Building a simple text editor with iced, a cross-platform GUI library for Rust](https://www.youtube.com/watch?v=gcBJ7cPSALo).
+
+### 🚀 Started
+- [The Rustonomicon](https://doc.rust-lang.org/nomicon/): Should you wish a long and happy career of writing Rust programs, you should turn back now and forget you ever saw this book. It is not necessary.
+- [Cargo Book](https://doc.rust-lang.org/cargo): a guide to Cargo, Rust's build tool and dependency manager.
+- [Rust API Guidelines](https://rust-lang.github.io/api-guidelines): a set of recommendations on how to design and present APIs for Rust.
 
 
-## More practice
+### 🕵️ To Do
+- [Rust Quiz](https://github.com/dtolnay/rust-quiz) for medium to hard Rust questions with explanations.
+- [High Assurance Rust](https://highassurance.rs/landing.html): developing secure and robust software
 
-- [Rustlings][rustlings] is a collection of small exercises to get you used to reading and writing [Rust] code.
-- [Rust on Exercism] provides coding exercises with mentoring.
-- [Rust Quiz] for medium to hard [Rust] questions with explanations.
+##### ❓ what are those
+- [Rust By Example] teaches you Rust basics using editable examples.
+- [Rust Reference] is not a formal spec, but is more detailed and comprehensive than the [Rust Book].
+- [Cheats.rs] and [Rust SVG Cheatsheet] for quick reference.
+- [Rust Edition Guide] for considering the improvements in [Rust 2018] and [Rust 2021].
+- [Rust std lib] documentation.
+- [Rustdoc Book] is a guide to the `rustdoc` documentation tool.
+- [Rust Cookbook] is a collection of simple examples that demonstrate good practices to accomplish common programming tasks, using crates from the Rust ecosystem.
+- [Rust Design Patterns] is an open source repository of Rust design patterns and idioms.
+- [Effective Rust] is a collection of guidelines that had been learned from real world experience of creating software in Rust.
+- [Rust FAQ] answers common questions about Rust.
+- [Rust Playground] allows sharing and checking runnable Rust code snippets online.
+- [Awesome Rust] is a curated list of Rust code and resources.
+- [This Week in Rust] represents handpicked and subscribable Rust weekly updates.
+- [Baby Steps] blog by [Nicholas Matsakis](https://github.com/nikomatsakis) shares useful Rust patterns, ideas and design decisions.
+- [Learning Material for Idiomatic Rust] is a curated list of resources to help you write ergonomic and idiomatic Rust code.
 
 
 
@@ -154,15 +126,11 @@ Each step must be performed as a separate [PR (pull request)][PR] with an approp
 [Awesome Rust]: https://github.com/rust-unofficial/awesome-rust
 [Baby Steps]: http://smallcultfollowing.com/babysteps
 [Cargo]: https://github.com/rust-lang/cargo
-[Cargo Book]: https://doc.rust-lang.org/cargo
 [Cheats.rs]: https://cheats.rs
 [CLion]: https://www.jetbrains.com/clion
 [Clippy]: https://github.com/rust-lang/rust-clippy
 [Effective Rust]: https://www.lurklurk.org/effective-rust
 [GitHub repository]: https://help.github.com/articles/github-glossary/#repository
-[IntelliJ IDEA]: https://www.jetbrains.com/idea
-[IntelliJ Rust]: https://intellij-rust.github.io
-[IntelliJ Toml]: https://plugins.jetbrains.com/plugin/8195-toml
 [Learning Material for Idiomatic Rust]: https://corrode.dev/blog/idiomatic-rust-resources
 [PR]: https://help.github.com/articles/github-glossary/#pull-request
 [RSS subscription]: https://github.com/instrumentisto/rust-incubator/commits/main.atom
@@ -178,13 +146,11 @@ Each step must be performed as a separate [PR (pull request)][PR] with an approp
 [Rust FAQ]: https://prev.rust-lang.org/faq.html
 [Rust on Exercism]: https://exercism.org/tracks/rust/exercises
 [Rust Playground]: https://play.rust-lang.org
-[Rust Quiz]: https://github.com/dtolnay/rust-quiz
 [Rust Reference]: https://doc.rust-lang.org/reference
 [Rust std lib]: https://doc.rust-lang.org/std
 [Rust SVG Cheatsheet]: https://web.archive.org/web/20241001012119/https://www.breakdown-notes.com/make/load/rust_cs_canvas/true
 [Rustdoc Book]: https://doc.rust-lang.org/rustdoc
 [rustfmt]: https://github.com/rust-lang/rustfmt
-[rustlings]: https://rustlings.cool
 [rustup]: https://rustup.rs
 [This Week in Rust]: https://this-week-in-rust.org
 
