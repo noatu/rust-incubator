@@ -49,14 +49,18 @@
 - [Rustlings](https://rustlings.cool): a collection of small exercises to get you used to reading and writing Rust code.
 - (did not do the `seq` macro) [Procedural Macros Workshop](https://github.com/dtolnay/proc-macro-workshop): a selection of projects designed to learn to write Rust procedural macros — Rust code that generates Rust code.
 
-#### 📝 Blogs
-- [Pretty State Machine Patterns in Rust](https://hoverbear.org/blog/rust-state-machine-pattern): utilizing Rust's type system to have a compile-time verified state machines.
-- [How to apply hexagonal architecture to Rust](https://web.archive.org/web/20250725142154/https://www.barrage.net/blog/technology/how-to-apply-hexagonal-architecture-to-rust)
-
 #### 📼 Videos
 - [Rust Data Modelling Without Classes](https://www.youtube.com/watch?v=z-0-bbc80JM): nice video by No Boilerplate about state machines.
 - ["Making Impossible States Impossible" by Richard Feldman](https://www.youtube.com/watch?v=IcgmSRJHu_8): ELM conference presentation about modeling types so that erroneous states are impossible to represent.
 - [Building a simple text editor with iced, a cross-platform GUI library for Rust](https://www.youtube.com/watch?v=gcBJ7cPSALo).
+
+#### 📝 Miscellaneous
+- [Rust FAQ](https://prev.rust-lang.org/faq.html): answers common questions about Rust.
+- [Pretty State Machine Patterns in Rust](https://hoverbear.org/blog/rust-state-machine-pattern): utilizing Rust's type system to have a compile-time verified state machines.
+- [How to apply hexagonal architecture to Rust](https://web.archive.org/web/20250725142154/https://www.barrage.net/blog/technology/how-to-apply-hexagonal-architecture-to-rust)
+
+### 🤸 Doing
+- [0. Become familiar with Rust basics][Step 0] articles
 
 ### 🚀 Started
 - [The Rustonomicon](https://doc.rust-lang.org/nomicon/): Should you wish a long and happy career of writing Rust programs, you should turn back now and forget you ever saw this book. It is not necessary.
@@ -66,9 +70,13 @@
 
 ### 🕵️ To Do
 - [Rust Quiz](https://github.com/dtolnay/rust-quiz) for medium to hard Rust questions with explanations.
-- [High Assurance Rust](https://highassurance.rs/landing.html): developing secure and robust software
+- [LifetimeKata](https://tfpk.github.io/lifetimekata/index.html): a set of exercises which you can use to improve your understanding of lifetimes in Rust.
+- [High Assurance Rust](https://highassurance.rs/landing.html): developing secure and robust software.
 
-##### ❓ what are those
+#### 😕 Maybe 
+- [Learn Rust With Entirely Too Many Linked Lists](https://rust-unofficial.github.io/too-many-lists/): a pretty old book, but seems nice.
+
+#### ❓ what are those
 - [Rust By Example] teaches you Rust basics using editable examples.
 - [Rust Reference] is not a formal spec, but is more detailed and comprehensive than the [Rust Book].
 - [Cheats.rs] and [Rust SVG Cheatsheet] for quick reference.
@@ -78,7 +86,6 @@
 - [Rust Cookbook] is a collection of simple examples that demonstrate good practices to accomplish common programming tasks, using crates from the Rust ecosystem.
 - [Rust Design Patterns] is an open source repository of Rust design patterns and idioms.
 - [Effective Rust] is a collection of guidelines that had been learned from real world experience of creating software in Rust.
-- [Rust FAQ] answers common questions about Rust.
 - [Rust Playground] allows sharing and checking runnable Rust code snippets online.
 - [Awesome Rust] is a curated list of Rust code and resources.
 - [This Week in Rust] represents handpicked and subscribable Rust weekly updates.
@@ -86,7 +93,7 @@
 - [Learning Material for Idiomatic Rust] is a curated list of resources to help you write ergonomic and idiomatic Rust code.
 
 
-
+<!-- Helix macro:   gef:ll<S-D>d<S-F>:hvgs*%s<ret>a(<esc>pgexd   -->
 
 [Step 0]: 0_basics
 [Step 1]: 1_concepts
