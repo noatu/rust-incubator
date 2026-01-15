@@ -2,7 +2,7 @@
 
 ## ⏱️ Incubator Schedule
 
-- [ ] [0. Become familiar with Rust basics][Step 0] (3 days)
+- [x] [0. Become familiar with Rust basics][Step 0] (3 days)
 - [ ] [1. Concepts][Step 1] (2 days, after all sub-steps)
     - [ ] [1.1. Default values, cloning and copying][Step 1.1] (1 day)
     - [ ] [1.2. Boxing and pinning][Step 1.2] (1 day)
@@ -60,7 +60,7 @@
 - [How to apply hexagonal architecture to Rust](https://web.archive.org/web/20250725142154/https://www.barrage.net/blog/technology/how-to-apply-hexagonal-architecture-to-rust)
 
 ### 🤸 Doing
-- [0. Become familiar with Rust basics][Step 0] articles
+- [1. Concepts][Step 1] substeps
 
 ### 🚀 Started
 - [The Rustonomicon](https://doc.rust-lang.org/nomicon/): Should you wish a long and happy career of writing Rust programs, you should turn back now and forget you ever saw this book. It is not necessary.
