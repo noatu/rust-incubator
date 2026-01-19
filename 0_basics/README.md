@@ -7,23 +7,23 @@ __Estimated time__: 3 days
     - Rust uses the same memory model as C or C++ do (based on LLVM). Memory is organized as stack, heap, and static storage. The ownership system enforces memory safety at compile time.
     - The Rust standard library additionally links to the C standard library. Rust code can be compiled **without** the standard library, in which case the runtime is roughly equivalent to C's.
     - Rust supports both single-threaded and multiple-threaded execution. Thread safety is enforced with `Send` and `Sync` auto marker traits, which prevent data races at compile time.
-    - Rust is synchronous by default. Async support is opt-in. `async` and `await` may be used to write function, but executing them requires an async runtime, such as Tokio. Under the hood async functions are essentially state machines. They return Futures that must be polled to advance the state mahcine to completion.
+    - Rust is synchronous by default. Async support is opt-in. `async` and `await` may be used to write functions, but executing them requires an async runtime, such as Tokio. Under the hood async functions are essentially state machines. They return Futures that must be polled to advance the state machine to completion.
 
 - [x] What runtime does Rust have? Does it use a GC (garbage collector)?
     - Sources:
         - [FAQ Is Rust garbage collected?](https://prev.rust-lang.org/en-US/faq.html#is-rust-garbage-collected)
         - [FAQ Does Rust have a runtime?](https://prev.rust-lang.org/en-US/faq.html#does-rust-have-a-runtime)
     - Rust has no runtime system in the typical sense used by languages such as Java, but parts of the Rust standard library can be considered a "runtime", providing a heap, backtraces, unwinding, and stack guards. It does not have a GC, and does not need any to be memory safe (as in no segfaults). Rust uses a system of ownership and borrowing instead, and that system solved many other problems such as resource management and concurrency. That makes Rust lean and easy to embed and integrate.
-    - There is, however a possibility of having an optional garbage collection as an extension, to enable even better integration with garbage-collected runtimes (e.d., Spidermonkey and V8 JS enines).
+    - There is, however a possibility of having an optional garbage collection as an extension, to enable even better integration with garbage-collected runtimes (e.g., Spidermonkey and V8 JS engines).
 
 - [x] What does static typing mean? What is a benefit of using it?
     - Static typing means that variable have fixed, known types that are checked at compile-time.
-    - It catches type errors before execution. Given the Rust's powerful type system, etire classes of bugs can be prevented. Static typing also improves performance, since the compiler knows exact memory layouts and can optimize accordingly.
+    - It catches type errors before execution. Given the Rust's powerful type system, entire classes of bugs can be prevented. Static typing also improves performance, since the compiler knows exact memory layouts and can optimize accordingly.
 
 - [x] What are generics and parametric polymorphism? Which problems do they solve?
     - Generics are type parameters that let you write code that works with multiple types.
     - Parametric polymorphism is the formal term for this concept -- functions and types parameterized by other types, i.e. `Vec<T>`.
-    - It eliminates code duplication, mainstains type safety (the compiler validates the operations based on concrete types), and enables abstraction without performance cost (with monomorphization, which may result in an increased binary size, though).
+    - It eliminates code duplication, maintains type safety (the compiler validates the operations based on concrete types), and enables abstraction without performance cost (with monomorphization, which may result in an increased binary size, though).
 
 - [x] What are traits? How are they used? How do they compare to interfaces? What are auto traits and blanket impls? What is a marker trait?
     - Sources: [Brandon Smith: Three Kinds of Polymorphism in Rust](https://www.brandons.me/blog/polymorphism-in-rust), "trust me bro".
@@ -31,8 +31,8 @@ __Estimated time__: 3 days
     - One disadvantage, which will not be obvious coming from other languages: there's no way with a trait to find out which variant you're working with and get at its other properties. There's no `instanceof`, there's no `as` casting. You can only work with the value via the actual trait methods.
     - Both traits and interfaces define contracts types must fulfill. Traits are more powerful though. They support default method implementations, associated types, and can be implemented for external types retroactively.
     - Auto traits are those that are automatically implemented by the compiler. The rule of thumb is if all fields of a struct satisfy an auto trait, then the struct does too. Common ones are `Send`, `Sync`, and `Unpin`.
-    - Marker traits have no methods. They are used purely for compile-time guarantees and bounds. Common ones are `Send`, `Sync`, `Copy`, and `Sized`. They signal properties to the type system without adding behaviuor.
-    - Blanket implementations implement a trait for all types that satisfy the trait bounds. They are not as powerful as one could wish because most of them will conflict with standard library blankets.
+    - Marker traits have no methods. They are used purely for compile-time guarantees and bounds. Common ones are `Send`, `Sync`, `Copy`, and `Sized`. They signal properties to the type system without adding behaviour.
+    - Blanket implementations implement a trait for all types that satisfy the trait bounds. They are not as powerful as one would wish because most of them will conflict with standard library blankets.
 
 - [x] What are static and dynamic dispatch? Which should you use, and when?
     - Source: [Brandon Smith: Three Kinds of Polymorphism in Rust](https://www.brandons.me/blog/polymorphism-in-rust), "trust me bro".
@@ -65,9 +65,9 @@ __Estimated time__: 3 days
 
 - [x] What is cloning? What is copying? How do they compare?
     - Source: [FAQ Does Rust have copy constructors? ](https://prev.rust-lang.org/en-US/faq.html#does-rust-have-copy-constructors)
-    - Types which implement the `Copy` trait will do a standard C-like "shallow copy" with no extra work (similar to trivially copyable types in C++). It is impossible to implement `Copy` types that require custom copy behavior.
+    - Types which implement the `Copy` trait will do a standard C-like "shallow copy" with no extra work (similar to trivially copyable types in C++). It is impossible to implement `Copy` types that requires custom copy behavior.
     - In Rust "copy constructors" are created by implementing the `Clone` trait, and explicitly calling the `clone` method. Making user-defined copy operators explicit surfaces the underlying complexity, making it easier for the developer to identify potentially expensive operations.
-    - Note though cloning a value can be expensive, causing further allocations. The `Copy` trait requires the `Clone` trait to be implemeted.
+    - Note that cloning a value can be expensive, causing further allocations. The `Copy` trait requires the `Clone` trait to be implemented.
 
 - [x] What is RAII? How is it implemented in Rust? What is the benefit of using it?
     - Source: [Jimmy Hartzell: RAII: Compile-Time Memory Management in C++ and Rust](https://www.thecodedmessage.com/posts/raii)
@@ -80,12 +80,12 @@ __Estimated time__: 3 days
 
 - [x] What is an iterator? What is a collection? How do they differ? How are they used?
     - Sources: [std::collections](https://doc.rust-lang.org/stable/std/collections/index.html), [std::iter](https://doc.rust-lang.org/stable/std/iter/index.html), "trust me bro".
-    - A collection is a programming data structure that holds items for data storage and processing. Rust has for major categories: sequences, maps, sets and miscellaneous ([BinaryHeap](https://doc.rust-lang.org/stable/std/collections/struct.BinaryHeap.html)). If you have a collection of some kind, and need to perform an operation on the elements of said collection, you will probably use an iterator.
-    - Iterators provide a sequence of values in a **generic**, safe, efficient and convenient way. The contents of an iterator are usually lazily evaluated, so that only the values that are actually needed are ever actually produced, and no allocation need be done to temporarily store them.
+    - A collection is a programming data structure that holds items for data storage and processing. Rust has four major categories: sequences, maps, sets and miscellaneous ([BinaryHeap](https://doc.rust-lang.org/stable/std/collections/struct.BinaryHeap.html)). If you have a collection of some kind, and need to perform an operation on the elements of said collection, you will probably use an iterator.
+    - Iterators provide a sequence of values in a **generic**, safe, efficient and convenient way. The contents of an iterator are usually lazily evaluated, so that only the values that are actually needed are ever actually produced, and no allocation is needed to temporarily store them.
     - The main difference is that iterators are used to traverse collections without needing to know their internal structure.
 
 - [x] What are macros? Which problems do they solve? What is the difference between declarative and procedural macros?
-    - Macros are code that generates other code at compile time. They operate on syntax trees rather than values, allowing metaprogramming in Rust. They enable: reducing repetetive boilerplate, compile-time logic evaluation, variadic functions (accepting any number of arguments), and type introspection.
+    - Macros are code that generates other code at compile time. They operate on syntax trees rather than values, allowing metaprogramming in Rust. They enable: reducing repetitive boilerplate, compile-time logic evaluation, variadic functions (accepting any number of arguments), and type introspection.
     - Declarative macros work purely with pattern matching and substitution: they match on syntax with match-like arms and transform input tokens.
     - Procedural macros are rust functions that receive a syntax tree, do manipulations with it, and return a new one. They have three types: function-like, derive, and attribute. Compared to declarative macros they have programmatic control. That makes them more powerful, but more complex, and they require a separate `proc-macro = true` crate.
 
@@ -97,7 +97,7 @@ __Estimated time__: 3 days
 
 - [x] Why does Rust have `&str` and `String` types? How do they differ? When should you use them?
     - Source: [FAQ What are the differences between the two different string types?](https://prev.rust-lang.org/en-US/faq.html#what-are-the-differences-between-str-and-string)
-    - The `&str` is a primitive type implemened by the Rust language, while `String` is implemented in the standard library.
+    - The `&str` is a primitive type implemented by the Rust language, while `String` is implemented in the standard library.
     - `String` is an owned buffer of UTF-8 bytes allocated on the heap. Mutable Strings can be modified, growing their capacity as needed. `&str` is a fixed-capacity "view" into a `String` allocated elsewhere, commonly on the heap, in the case of slices dereferenced from Strings, or in static memory, in the case of string literals. 
 
 - [x] What are lifetimes? Which problems do they solve? Which benefits do they give?

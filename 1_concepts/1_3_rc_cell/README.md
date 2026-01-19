@@ -65,7 +65,7 @@ To better understand [`Cell`]/[`RefCell`]'s purpose, design, limitations and use
 - [Rust Book: 15.5. RefCell and the Interior Mutability Pattern][3]
 - [Official `std::cell` docs][`std::cell`]
 - [Paul Dicker: Interior mutability patterns][6]
-- [David Tolnay: Accurate mental model for Rust’s reference types][8]
+- [ ] [David Tolnay: Accurate mental model for Rust’s reference types][8]
 
 
 ### Advanced borrowing patterns

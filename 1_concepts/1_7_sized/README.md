@@ -11,7 +11,7 @@ To better understand [`Sized`]'s and `?Sized`'s purpose, design, limitations and
 - [Official `Sized` docs][`Sized`]
 - [Old Rust Book: 3.31. Unsized Types][4]
 - [Rust Forum: Trait Objects and the Sized Trait][5]
-- [pretzelhammer: Sizedness in Rust][6]
+- [ ] [pretzelhammer: Sizedness in Rust][6]
 - [Christian Visintin: Don't you dare to sort your struct fields when using ?Sized][7]
 
 

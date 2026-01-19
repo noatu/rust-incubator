@@ -4,6 +4,8 @@ Step 1.2: Boxing and pinning
 __Estimated time__: 1 day
 
 
+- [] [Amos: Pin and suffering](https://fasterthanli.me/articles/pin-and-suffering)
+
 
 
 ## Boxing
