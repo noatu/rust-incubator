@@ -4,8 +4,6 @@ Step 1.1: Default values, cloning and copying
 __Estimated time__: 1 day
 
 
-
-
 ## Default values
 
 [Rust] has a standard way to deal with default values of a type via the [`Default`] trait. Read through [its official docs][`Default`] to understand the design.
@@ -39,8 +37,6 @@ let x = Foo { bar: baz, ..Default::default() };
 ```
 
 
-
-
 ## Cloning and copying
 
 By default, all types in [Rust] follow ['move semantics'][1].
@@ -58,30 +54,32 @@ However, the [`Copy`] marker trait (see [official docs][`Copy`]) enables 'copy s
 > Generally speaking, if your type can implement `Copy`, it should. Keep in mind, though, that implementing `Copy` is part of the public API of your type. If the type might become non-`Copy` in the future, it could be prudent to omit the `Copy` implementation now, to avoid a breaking API change.
 
 To better understand the topic, read through:
-- [Official `Clone` docs][`Clone`]
-- [Official `Copy` docs][`Copy`]
-- [HashRust: Moves, copies and clones in Rust][2]
-
-
+- [x] [Official `Clone` docs][`Clone`]
+- [x] [Official `Copy` docs][`Copy`]
+- [x] [HashRust: Moves, copies and clones in Rust][2]
 
 
 ## Task
 
-- Create a `Point` type which represents a 2D point (`x` and `y` coordinates). This type has to be `Copy` and `Default`.
-- Create a `Polyline` type which represents a non-empty set of `Point`s of unknown size. This type has to be `Clone` and non-`Default`.
-
-
+- [x] Create a `Point` type which represents a 2D point (`x` and `y` coordinates). This type has to be `Copy` and `Default`.
+- [x] Create a `Polyline` type which represents a non-empty set of `Point`s of unknown size. This type has to be `Clone` and non-`Default`.
 
 
 ## Questions
 
 After completing everything above, you should be able to answer (and understand why) the following questions:
 - What purpose does the [`Default`] trait serve in [Rust]?
+    - The `Default` trait serves to create some kind of initial value, identity value, or anything else that may make sense as a default.
 - What is `#[derive(Default)]` from `std` capable of? What does it wrong? Which are alternatives?
+    - It is capable of deriving the `Default` trait for a type which uses the type fields' `Default` implementation.
+    - The derive macro does not do anything wrong, really. Yes, zero values are not sensible defaults, there is no validation or logic, and it assumes what "default" means for the type based on the fields. But that is how it should function. If you need more capabilities either implement the trait by hand, or use the [smart-default] crate for a smarter derive.
 - What does [`Clone`] mean semantically?
+    - It means to create a deep copy (duplicating the allocations recursively) that can't be performed bit-to-bit.
 - What does [`Copy`] mean semantically? How is it connected with [`Clone`]? Which limitations does it have and why?
-
-
+    - `Copy` means that the an independent value can be created with a simple bit-wise copy.
+    - `Copy` is a marker trait which requires `Clone` as a supertrait (the type must implement `Clone`). `Copy` types are implicitly duplicated on assignment or moves, while `Clone` requires explicit `.clone()` calls.
+    - `Copy` must maintain memory safety. A type can be `Copy` only if all fields are `Copy`.
+    - Types that implement `Drop` need to free the resources. That creates a conflict: which of the duplicates must free the resource? Therefore types implementing `Drop` cannot implement `Copy`.
 
 
 [`Clone`]: https://doc.rust-lang.org/std/clone/trait.Clone.html
