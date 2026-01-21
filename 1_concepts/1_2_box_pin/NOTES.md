@@ -1,3 +1,4 @@
+# Box
 ## [std::boxed](https://doc.rust-lang.org/std/boxed/index.html)
 Boxes ensure that they never allocate more than `isize::MAX` bytes.
 
@@ -91,7 +92,7 @@ It’s roughly the same as interfaces in Go, except the second pointer in a `Box
 
 There is no safe way to downcast from a `Box<dyn T>` to a concrete type `U`, without using [Any](https://doc.rust-lang.org/stable/std/any/trait.Any.html), which is made explicitly for that purpose.
 
-Closures are "It who cannot be named". `closure `[closure@src/main.rs:2:23: 4:6]` is not the name of a type, you can't name it. So you either box it (which forces a heap allocation):
+Closures are the "It who cannot be named". `closure [closure@src/main.rs:2:23: 4:6]` is not the name of a type, you can't name it. So you either box it (which forces a heap allocation):
 ```rs
 fn get_closure() -> Box<dyn Fn()> {
     Box::new(|| { println!("hello from the closure side"); })
@@ -103,4 +104,97 @@ fn get_closure() -> impl Fn() {
     || { println!("hello from the closure side"); }
 }
 ```
-Using `std::mem::size_of_val`, we can print the size of that closure.
+Using `std::mem::size_of_val`, we can print the size of that closure -- 0. The size of the closure that captures something:
+```rs
+fn get_closure() -> impl Fn() {
+    let val = 27_u128;
+    move || { println!("hello from the closure side, val is {}", val); }
+}
+```
+is `16`, the size of the captured value.
+
+
+
+
+# Pin
+
+## [Official `std::pin` docs](https://doc.rust-lang.org/std/pin)
+Note that as long as you don’t use `unsafe`, it’s impossible to create or misuse a pinned value in a way that is unsound.
+
+All values in Rust are trivially _moveable_. This means that the address at which a value is located is not necessarily stable in between borrows.
+
+Common smart-pointer types such as `Box<T>` and `&mut T` also allow _moving_ the underlying _value_ they point at: you can move out of a `Box<T>`, or you can use `mem::replace` to move a `T` out of a `&mut T`.
+
+We say that a value has been _pinned_ when it has been put into a state where it is guaranteed to remain _located at the same place in memory_ from the time it is pinned until its `drop` is called.
+
+Notice that the thing wrapped by `Pin` is not the value which we want to pin itself, but rather a pointer to that value! A `Pin<Ptr>` does not pin the `Ptr`; instead, it pins the pointer’s _**pointee** value_.
+A `Pin<Ptr>` where `Ptr: Deref` is a “`Ptr`-style pinning pointer” to a pinned `Ptr::Target` – so, a `Pin<Box<T>>` is an owned, pinning pointer to a pinned `T`, and a `Pin<Rc<T>>` is a reference-counted, pinning pointer to a pinned `T`.
+
+A `Pin<&mut T>` makes it impossible to obtain the wrapped `&mut T` safely because through that `&mut T` it would be possible to _move_ the underlying value out of the pointer with `mem::replace`, etc.
+
+The vast majority of Rust types have no address-sensitive states. These types implement the `Unpin` auto-trait, which cancels the restrictive effects of `Pin` when the _pointee_ type `T` is `Unpin`. When `T: Unpin`, `Pin<Box<T>>` functions identically to a non-pinning `Box<T>`; similarly, `Pin<&mut T>` would impose no additional restrictions above a regular `&mut T`.
+
+The compiler is free to take the conservative stance of marking types as `Unpin` so long as all of the types that compose its fields are also `Unpin`.
+
+If you really need to pin a value of a foreign or built-in type that implements `Unpin`, you’ll need to create your own wrapper type around the `Unpin` type you want to pin and then opt-out of `Unpin` using `PhantomPinned`:
+```rs
+struct AddrTracker {
+    prev_addr: Option<usize>,
+    _pin: PhantomPinned,
+}
+
+impl AddrTracker {
+    fn check_for_move(self: Pin<&mut Self>) {
+        let current_addr = &*self as *const Self as usize;
+        match self.prev_addr {
+            None => {
+                // SAFETY: we do not move out of self
+                let self_data_mut = unsafe { self.get_unchecked_mut() };
+                self_data_mut.prev_addr = Some(current_addr);
+            },
+            Some(prev_addr) => assert_eq!(prev_addr, current_addr),
+        }
+    }
+}
+```
+
+Exposing access to the inner field which you want to remain pinned must then be carefully considered as well! Remember, exposing a method that gives access to a `Pin<&mut InnerT>` where `InnerT: Unpin` would allow safe code to trivially move the inner value out of that pinning pointer, which is precisely what you’re seeking to prevent! Exposing a field of a pinned value through a pinning pointer is called “projecting” a pin, and the more general case of deciding in which cases a pin should be able to be projected or not is called “structural pinning.” We will go into more detail about this [here](https://doc.rust-lang.org/stable/std/pin/index.html#projections-and-structural-pinning "mod std::pin").
+
+If your type is [`#[repr(packed)]`](https://doc.rust-lang.org/nomicon/other-reprs.html#reprpacked), the compiler will automatically move fields around to be able to drop them. It might even do that for fields that happen to be sufficiently aligned. As a consequence, you cannot use pinning with a `#[repr(packed)]` type.
+
+### [`Drop` guarantee](https://doc.rust-lang.org/stable/std/pin/index.html#subtle-details-and-the-drop-guarantee "mod std::pin")
+The purpose of pinning is not _just_ to prevent a value from being _moved_ , but more generally to be able to rely on the pinned value _remaining valid **at a specific place**_ in memory.
+
+From the moment a value is pinned by constructing a `Pin`ning pointer to it, that value must _remain, **valid**_ , at that same address in memory, _until its `drop` handler is called._ This point is subtle but required for intrusive data structures to be implemented soundly.
+
+It is crucial to remember that `Pin`ned data _must_ be `drop`ped before it is invalidated; not just to prevent memory leaks, but as a matter of soundness.
+
+### [Projections and Structural Pinning](https://doc.rust-lang.org/stable/std/pin/#projections-and-structural-pinning)
+ugh...
+
+As the author of a data structure, you get to decide for each field whether pinning “propagates” to this field or not. Pinning that propagates is also called “structural”, because it follows the structure of the type:
+
+- Fields without structural pinning may have a projection method that turns `Pin<&mut Struct>` into `&mut Field`.
+- The other option is to decide that pinning is “structural” for `field`, meaning that if the struct is pinned then so is the field.
+
+In the standard library, pointer types generally do not have structural pinning, and thus they do not offer pinning projections. This is why `Box<T>: Unpin` holds for all `T`. It makes sense to do this for pointer types, because moving the `Box<T>` does not actually move the `T`: the `Box<T>` can be freely movable (aka `Unpin`) even if the `T` is not. In fact, even `Pin<Box<T>>` and `Pin<&mut T>` are always `Unpin` themselves, for the same reason: their contents (the `T`) are pinned, but the pointers themselves can be moved without moving the pinned data. For both `Box<T>` and `Pin<Box<T>>`, whether the content is pinned is entirely independent of whether the pointer is pinned, meaning pinning is _not_ structural.
+
+When implementing a `Future` combinator, you will usually need structural pinning for the nested futures, as you need to get pinning (`Pin`-wrapped) references to them to call `poll`. But if your combinator contains any other data that does not need to be pinned, you can make those fields not structural and hence freely access them with a mutable reference even when you just have `Pin<&mut Self>` (such as in your own `poll` implementation).
+
+## std::pin::pin macro
+
+The local pinning performed by this macro is usually dubbed “stack”-pinning. Unlike [`Box::pin`](https://doc.rust-lang.org/stable/std/boxed/struct.Box.html#method.pin), this does not create a new heap allocation. The element might still end up on the heap however.
+
+Precisely because a value is pinned to local storage, the resulting `Pin<&mut T>` reference ends up borrowing a local tied to that block: it can’t escape it. This makes `pin!` **unsuitable to pin values when intending to _return_ them**. Instead, the value is expected to be passed around _unpinned_ until the point where it is to be consumed, where it is then useful and even sensible to pin the value locally using `pin!`.
+
+By virtue of not requiring an allocator, `pin!` is the main non-`unsafe` `#![no_std]`-compatible `Pin` constructor.
+
+## std::pin::Pin
+If the pointee value’s type does not implement `Unpin`, then Rust will not let us use the `Pin::new` function directly.
+
+The `Future` trait requires all calls to `poll` to use a `self: Pin<&mut Self>` parameter instead of the usual `&mut self`. Therefore, when manually polling a future, you will need to pin it first.
+
+The simplest and most flexible way to pin a value that does not implement `Unpin` is to put that value inside a `Box` and then turn that `Box` into a “pinning `Box`” by wrapping it in a `Pin`. You can do both of these in a single step using `Box::pin`.
+
+If you have a value which is already boxed, for example a `Box<dyn Future>`, you can pin that value in-place at its current memory address using `Box::into_pin`.
+
