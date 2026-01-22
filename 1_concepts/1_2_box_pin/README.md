@@ -30,7 +30,7 @@ Note, that pinning and [`Unpin`] only affect the pointed-to type `P::Target`, no
 
 To better understand [`Pin`]'s purpose, design, limitations, and use cases, read through:
 - [x] [Official `std::pin` docs][`std::pin`]
-- [ ] [Amos: Pin and suffering](https://fasterthanli.me/articles/pin-and-suffering)
+- [x] [Amos: Pin and suffering](https://fasterthanli.me/articles/pin-and-suffering)
 - [ ] [Reddit: Pinned objects ELI5?][2]
 - [ ] [SoByte: Pin and Unpin in Rust][10]
 - [ ] [Adam Chalmers: Pin, Unpin, and why Rust needs them][4]
@@ -48,7 +48,7 @@ To better understand [`Pin`]'s purpose, design, limitations, and use cases, read
 
 ## Task
 
-1. For the following types: `Box<T>`, `Rc<T>`, `Vec<T>`, `String`, `&[u8]`, `T`.  
+- [x] For the following types: `Box<T>`, `Rc<T>`, `Vec<T>`, `String`, `&[u8]`, `T`.
    Implement the following traits:
    ```rust
    trait SayHi: fmt::Debug {
@@ -70,7 +70,7 @@ To better understand [`Pin`]'s purpose, design, limitations, and use cases, read
    }
    ```
 
-2. For the following structure:
+- [x] For the following structure:
    ```rust
    struct MeasurableFuture<Fut> {
        inner_future: Fut,

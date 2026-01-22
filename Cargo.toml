@@ -1,11 +1,12 @@
 [workspace]
+resolver = "3"
 members = [
-    "1_concepts",
-    "1_concepts/1_*",
-    "2_idioms",
-    "2_idioms/2_*",
-    "3_ecosystem",
-    "3_ecosystem/3_*",
-    "4_backend",
-    "4_backend/4_*",
+  "1_concepts",
+  "1_concepts/1_*",
+  "2_idioms",
+  "2_idioms/2_*",
+  "3_ecosystem",
+  "3_ecosystem/3_*",
+  "4_backend",
+  "4_backend/4_*",
 ]

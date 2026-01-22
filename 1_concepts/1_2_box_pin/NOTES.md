@@ -198,3 +198,31 @@ The simplest and most flexible way to pin a value that does not implement `Unpin
 
 If you have a value which is already boxed, for example a `Box<dyn Future>`, you can pin that value in-place at its current memory address using `Box::into_pin`.
 
+## [Amos: Pin and suffering](https://fasterthanli.me/articles/pin-and-suffering)
+You can’t make an executor inside an executor.
+
+`Pin::new_unchecked(&mut self.sleep);` is unsafe. That means there are some invariants that the compiler will no longer be enforcing for us, so we’ll have to “just be careful”. Which is something we _never_ have to do in Rust, _except_ for when we use `unsafe`.
+
+Once we _pin_ something, ie. once we construct a `Pin<&mut T>` of it, we can _never_ use it unpinned (ie, as `&mut T`) ever again, _unless_ it implements `Unpin`.
+
+
+Despite the `unsafe`, this is one of the safest ways to use `Pin::new_unchecked`, because we’re _shadowing_ the previous `f` (of type `SlowRead`) with our new value of type `Pin<&mut SlowRead>`, which means we can never accidentally use it unpinned:
+```rs
+#[tokio::main]
+async fn main() -> Result<(), tokio::io::Error> {
+    let mut buf = vec![0u8; 128 * 1024];
+
+    let mut f = SlowRead::new(File::open("/dev/urandom").await?);
+    let before = Instant::now();
+    let mut f = unsafe { Pin::new_unchecked(&mut f) };
+
+    f.read_exact(&mut buf).await?;
+    println!("Read {} bytes in {:?}", buf.len(), before.elapsed());
+
+    Ok(())
+}
+```
+
+Because _some_ futures (like `sleep`) register themselves with some system of the executor, which points back to them, those futures should never be moved, and that’s why they need to be pinned. And everything is marked backwards, kind of. Every `Future` gets a pinned version of itself, and it can only be unpinned if it implements `Unpin`.
+
+
