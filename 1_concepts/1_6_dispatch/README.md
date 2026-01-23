@@ -20,6 +20,7 @@ To better understand [static][1] and [dynamic][2] dispatches' purpose, design, l
 - [Nicholas Matsakis: Dyn async traits, part 2][17]
 - [Armin Ronacher: Rust Any Part 1: Extension Maps in Rust][18]
 - [Armin Ronacher: Rust Any Part 2: As-Any Hack][19]
+- [ ] [Deep Dive into Rust Dyn Compatibility](https://uchout.moe/posts/rust-dyn-compatibility/)
 
 
 
